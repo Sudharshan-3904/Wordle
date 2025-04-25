@@ -1,2 +1,4 @@
 words.txt
 wordle_cli.py
+venv/*
+src/__pycache__/*

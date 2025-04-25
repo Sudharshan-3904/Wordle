@@ -1,21 +1,17 @@
-import requests
 import random
 import os
+import requests
 
-def fetch_random_word():
-    """
-    Fetch a random word from an API.
-    Returns:
-        str: A random word (in lowercase).
-    """
+def generate_random_word():
+    """Fetch a random 5-letter word from an API"""
     try:
-        response = requests.get("https://random-word-api.herokuapp.com/word?number=1")
-        response.raise_for_status()
-        word = response.json()[0]
-        return word.lower()
-    except requests.RequestException as e:
-        print(f"Error fetching the word: {e}")
-        return None
+        response = requests.get('https://random-word-api.herokuapp.com/word?length=5')
+        if response.status_code == 200:
+            return response.json()[0].lower()
+    except:
+        # Fallback words if API fails
+        fallback_words = ['happy', 'world', 'sunny', 'cloud', 'brain']
+        return random.choice(fallback_words)
 
 def clear_screen():
     """Clear the terminal screen."""
@@ -52,7 +48,7 @@ def display_feedback(guess, target_word):
 
 def wordle_game():
     """Run the Wordle game."""
-    target_word = fetch_random_word()
+    target_word = generate_random_word()
     if not target_word:
         print("Unable to start the game due to an error fetching the word.")
         return
